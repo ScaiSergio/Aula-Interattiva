@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestione Aula Computer</title>
+    <style>
+        .computer {
+            width: 80px;
+            margin: 10px;
+        }
+    </style>
+    <script>
+        var computerStates = []; // Array per tenere traccia dello stato di accensione/spegnimento
+
+        function cambiaStato(computerId) {
+            var index = parseInt(computerId.replace('computer', '')) - 1;
+            computerStates[index] = !computerStates[index]; // Inverte lo stato del computer
+            var img = document.getElementById(computerId);
+            img.src = computerStates[index] ? 'computer-on.png' : 'computer-off.png';
+        }
+
+        // Funzione per resettare lo stato di tutti i computer
+        function resettaStato() {
+            var computers = document.querySelectorAll('.computer');
+            computers.forEach(function(computer, index) {
+                computer.src = 'computer-off.png';
+                computerStates[index] = false; // Imposta lo stato di tutti i computer a spento
+            });
+        }
+
+        // Funzione per accendere un numero specifico di postazioni
+        function accendiPostazioni(numero) {
+            resettaStato(); // Resetta lo stato di tutti i computer
+            var computers = document.querySelectorAll('.computer');
+            for (var i = 0; i < numero; i++) {
+                if (computers[i]) {
+                    cambiaStato(computers[i].id);
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Gestione Aula Computer</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>Stato Attuale</h2>
+            <!-- Immagini dei computer generati dinamicamente -->
+            <div id="computerContainer"></div>
+            <!-- Bottone per resettare lo stato -->
+            <button onclick="resettaStato()">Resetta Stato</button>
+            <input type="number" id="numeroPostazioni" placeholder="Numero di postazioni">
+            <button onclick="accendiPostazioni(parseInt(document.getElementById('numeroPostazioni').value))">Accendi PC</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Nome Aula Computer</p>
+    </footer>
+
+    <script>
+        var computerContainer = document.getElementById('computerContainer');
+        for (var i = 1; i <= 1000; i++) {
+            var img = document.createElement('img');
+            img.id = 'computer' + i;
+            img.className = 'computer';
+            img.src = 'computer-off.png';
+            img.onclick = function() {
+                cambiaStato(this.id);
+            };
+            computerContainer.appendChild(img);
+            computerStates.push(false); // Inizializza tutti i computer come spenti
+        }
+    </script>
+</body>
+</html>
